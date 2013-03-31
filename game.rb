@@ -36,11 +36,11 @@ class Game < Gosu::Window
   def draw()
     @background.draw(0,0,0)
     @game_map.draw_(@player)
-    #@tiles.each_with_index do |t, i|
-      #scale=4
-      #t.draw(i*@unit_size*scale, i*@unit_size*scale, 0,
-             #factor_x=4, factor_y=4)
-    #end
+    @tiles.each_with_index do |t, i|
+      scale =1
+      t.draw(i*@unit_size*scale, i*@unit_size*scale, 0,
+             factor_x=1, factor_y=1)
+    end
     @player.draw_()
   end
 
