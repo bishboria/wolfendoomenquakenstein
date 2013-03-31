@@ -1,5 +1,3 @@
-require 'gosu'
-
 class Map
   def initialize(gosu, config, maploader)
     @gosu = gosu
@@ -30,21 +28,22 @@ class Map
   end
 
   def collision_logic(positionable)
-    bottom_left = @collision_map[world_pos(positionable.left_x)][world_pos(positionable.bottom_y)]
-
     if positionable.left_x <= 0
       positionable.left_x = 0
     end
 
-    if positionable.right_x >= @world_width
-      positionable.right_x = @world_width
+    if positionable.right_x > @world_width-1
+      positionable.right_x = @world_width-1
     end
 
     if positionable.top_y < 0
       positionable.bottom_y = 0
     end
 
-    if bottom_left == "4"
+    bottom_left = @collision_map[world_pos(positionable.left_x)][world_pos(positionable.bottom_y)]
+    bottom_right = @collision_map[world_pos(positionable.right_x)][world_pos(positionable.bottom_y)]
+
+    if bottom_left == "4" || bottom_right == "4"
       positionable.velocity.y = 0
       positionable.top_y = world_pos(positionable.bottom_y)*@unit
     else

@@ -24,7 +24,8 @@ class Game < Gosu::Window
     @unit_size = config["unit_size"]
     @tiles = Gosu::Image.load_tiles(self, config["tileset_filename"], @unit_size, @unit_size, tileable=true)
     @input = Input.new(self)
-    @player = Player.new(Position.new(@unit_size/2,@unit_size/2), @unit_size, Velocity.new(0,0), @tiles)
+    start_position = Position.new(@unit_size/2,@unit_size*27)
+    @player = Player.new(start_position, @unit_size, Velocity.new(0,0), @tiles)
   end
 
   def update()
