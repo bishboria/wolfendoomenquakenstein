@@ -6,26 +6,55 @@ class Player
     @images = images
     @scale_x = scale_x
     @scale_y = scale_y
+    @to_edge = @size / 2
   end
 
-  def position
+  def center
     @position
   end
 
-  def top_left_x
-    @position.x - (@size / 2)
+  def velocity
+    @velocity
   end
 
-  def top_left_y
-    @position.y - (@size / 2)
+  def falling?
+    @velocity.y > 0
   end
 
-  def bottom_right_x
-    @position.x + (@size / 2)
+  def moving_left?
+    @velocity.x < 0
   end
 
-  def bottom_right_y
-    @position.y + (@size / 2)
+  def left_x
+    @position.x - @to_edge
+  end
+
+  def left_x=(x)
+    @position.x = x + @to_edge
+  end
+
+  def right_x
+    @position.x + @to_edge
+  end
+
+  def right_x=(x)
+    @position.x = x - @to_edge
+  end
+
+  def top_y
+    @position.y - @to_edge
+  end
+
+  def top_y=(y)
+    @position.y = y - @to_edge
+  end
+
+  def bottom_y=(y)
+    @position.y = y + @to_edge
+  end
+
+  def bottom_y
+    @position.y + @to_edge
   end
 
   def update_(input)
@@ -33,26 +62,26 @@ class Player
       @velocity.x -= 1
     elsif input.right? && @velocity.x < 10
       @velocity.x += 1
-    elsif input.up? && @velocity.y > -10
-      @velocity.y -= 1
+    else
+      @velocity.x *= 0.9
+    end
+
+    if input.up? && @velocity.y > -10
+      @velocity.y -= 4
     elsif input.down? && @velocity.y < 10
       @velocity.y += 1
     else
-      @velocity.x *= 0.9
       @velocity.y *= 0.9
     end
     #if input.enter? && @position.vy < 13
       #@position.vy -= -3
     #end
 
-    # gravity
-    #@velocity.y -= 1
-
     @position.x += @velocity.x
     @position.y += @velocity.y
   end
 
   def draw_()
-    @images[0].draw(@position.x, @position.y, 0, factor_x=5, factor_x=6)
+    @images[38].draw(self.left_x, self.top_y, 0, factor_x=1, factor_x=1)
   end
 end

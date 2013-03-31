@@ -17,30 +17,25 @@ class Game < Gosu::Window
 
     @background = Gosu::Image.new(self, Weather.image_for_current_weather, true)
 
-    @unit_size = config["unit_size"]
     self.caption = config["window_title"]
-    @game_map = Map.new(self, config["unit_size"],
-                        MapLoader.load(config["layout_filename"]),
-                        MapLoader.load(config["collision_filename"]),
-                        MapLoader.load(config["enemy_filename"]))
-    @tiles = Gosu::Image.load_tiles(self, config["tileset_filename"], config["unit_size"], config["unit_size"], tileable=true)
+
+    @game_map = Map.new(self, config, MapLoader)
+
+    @unit_size = config["unit_size"]
+    @tiles = Gosu::Image.load_tiles(self, config["tileset_filename"], @unit_size, @unit_size, tileable=true)
     @input = Input.new(self)
-    @player = Player.new(Position.new(0,0), config["unit_size"], Velocity.new(0,0), @tiles)
+    @player = Player.new(Position.new(@unit_size/2,@unit_size/2), @unit_size, Velocity.new(0,0), @tiles)
   end
 
   def update()
     @input.update_()
     @player.update_(@input)
+    @game_map.update_(@player)
   end
 
   def draw()
     @background.draw(0,0,0)
-    @game_map.draw_(@player)
-    @tiles.each_with_index do |t, i|
-      scale =1
-      t.draw(i*@unit_size*scale, i*@unit_size*scale, 0,
-             factor_x=1, factor_y=1)
-    end
+    @game_map.draw_(@tiles, @player)
     @player.draw_()
   end
 

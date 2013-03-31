@@ -5,7 +5,7 @@ class MapLoader
     height = lines.size
     Array.new(width) do |x|
       Array.new(height) do |y|
-        lines[x][y]
+        lines[y][x]
       end
     end
   end
