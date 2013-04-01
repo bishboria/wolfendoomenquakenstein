@@ -21,9 +21,10 @@ class Game < Gosu::Window
 
     self.caption = config["window_title"]
 
-    @game_map = Map.new(self, config, MapLoader, WorldPosition)
-
+    @map = Map.new(config, MapLoader)
     @unit_size = config["unit_size"]
+    @collision_thing = Collision.new(config, WorldPosition.new(@unit_size), MapLoader)
+
     @tiles = Gosu::Image.load_tiles(self, config["tileset_filename"], @unit_size, @unit_size, tileable=true)
     @input = Input.new(self)
     start_position = Position.new(@unit_size/2.0,@unit_size*27.0)
@@ -31,14 +32,15 @@ class Game < Gosu::Window
   end
 
   def update()
+    @map.update_()
     @input.update_()
     @player.update_(@input)
-    @game_map.update_(@player)
+    @collision_thing.update_(@player)
   end
 
   def draw()
     @background.draw(0,0,0)
-    @game_map.draw_(@tiles, @player)
+    @map.draw_(@tiles)
     @player.draw_()
   end
 

@@ -1,4 +1,6 @@
 class Player
+  attr_reader :velocity
+
   def initialize(position, size, velocity, images, scale_x=1, scale_y=1)
     @position = position
     @size = size
@@ -9,14 +11,6 @@ class Player
     @to_edge = @size / 2
   end
 
-  def center
-    @position
-  end
-
-  def velocity
-    @velocity
-  end
-
   def falling?
     @velocity.y > 0
   end
@@ -25,8 +19,8 @@ class Player
     @velocity.y < 0
   end
 
-  def moving_left?
-    @velocity.x < 0
+  def can_jump?
+    @velocity.y == 0
   end
 
   def left_x
@@ -70,8 +64,8 @@ class Player
       @velocity.x *= 0.9
     end
 
-    if input.up? && @velocity.y > -10
-      @velocity.y -= 4
+    if input.up? && can_jump?
+      @velocity.y -= 20
     elsif input.down? && @velocity.y < 10
       @velocity.y += 1
     else
