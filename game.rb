@@ -9,6 +9,8 @@ require_relative 'position'
 require_relative 'scalar'
 require_relative 'velocity'
 require_relative 'weather'
+require_relative 'collision_types'
+require_relative 'world_position'
 
 class Game < Gosu::Window
   def initialize(config)
@@ -19,12 +21,12 @@ class Game < Gosu::Window
 
     self.caption = config["window_title"]
 
-    @game_map = Map.new(self, config, MapLoader)
+    @game_map = Map.new(self, config, MapLoader, WorldPosition)
 
     @unit_size = config["unit_size"]
     @tiles = Gosu::Image.load_tiles(self, config["tileset_filename"], @unit_size, @unit_size, tileable=true)
     @input = Input.new(self)
-    start_position = Position.new(@unit_size/2,@unit_size*27)
+    start_position = Position.new(@unit_size/2.0,@unit_size*27.0)
     @player = Player.new(start_position, @unit_size, Velocity.new(0,0), @tiles)
   end
 

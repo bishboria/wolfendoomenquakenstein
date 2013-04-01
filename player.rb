@@ -21,6 +21,10 @@ class Player
     @velocity.y > 0
   end
 
+  def jumping?
+    @velocity.y < 0
+  end
+
   def moving_left?
     @velocity.x < 0
   end
@@ -34,7 +38,7 @@ class Player
   end
 
   def right_x
-    @position.x + @to_edge
+    @position.x + @to_edge - 1
   end
 
   def right_x=(x)
@@ -50,7 +54,7 @@ class Player
   end
 
   def bottom_y=(y)
-    @position.y = y + @to_edge
+    @position.y = y + @to_edge - 1
   end
 
   def bottom_y
@@ -73,9 +77,6 @@ class Player
     else
       @velocity.y *= 0.9
     end
-    #if input.enter? && @position.vy < 13
-      #@position.vy -= -3
-    #end
 
     @position.x += @velocity.x
     @position.y += @velocity.y
